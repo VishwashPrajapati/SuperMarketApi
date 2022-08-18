@@ -2,7 +2,12 @@ const mongoose = require("mongoose");
 
 const supermarketSchema = mongoose.Schema({
   name: { type: String, require: true },
-  items: [],
+  items: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Items",
+    },
+  ],
   active: { type: Boolean },
 });
 

@@ -1,4 +1,5 @@
 const Category = require("../models/categoryModel");
+var mongoose = require("mongoose");
 const Items = require("../models/ItemsModel");
 const Supermarket = require("../models/SupermarketModel");
 
@@ -17,25 +18,16 @@ exports.CreateItems = async (req, res, next) => {
   allmarket.forEach((x) => {
     ids.push(x._id);
   });
-  await Supermarket.findByIdAndUpdate(
+
+  await Supermarket.updateMany(
     {
-      _id: {
-        $in: [
-          mongoose.Types.ObjectId("62fd32af79e79d03bf60ed55"),
-          mongoose.Types.ObjectId("62fd32b779e79d03bf60ed58"),
-        ],
-      },
+      _id: { $in: ids },
     },
     {
       $push: { items: item._id },
     },
     { multi: true }
   );
-  // allSupermarket.forEach((e) => {
-  //   let exist = e.items.findIndex((item) => item !== category._id);
-  //   if (exist === -1) {
-  //   }
-  // });
 
   return res.json({
     Data: item,
@@ -48,5 +40,42 @@ exports.getAllItems = async (req, res, next) => {
   return res.json({
     Data: items,
     message: "respond with a resource",
+  });
+};
+
+exports.getItems = async (req, res, next) => {
+  let items = await Items.findById(req.params.id).populate("category", "name");
+  return res.json({
+    Data: items,
+    message: "Successfully.....!",
+  });
+};
+
+exports.deleteItems = async (req, res, next) => {
+  let items = await Items.findByIdAndDelete(req.params.id);
+
+  let ids = [];
+
+  let allmarket = await Supermarket.find();
+
+  allmarket.forEach((x) => {
+    let id = x.items.findIndex((e) => e === req.params.id);
+    console.log(id);
+    if (id === -1) {
+      ids.push(x._id);
+    }
+  });
+
+  await Supermarket.updateMany(
+    {
+      _id: { $in: ids },
+    },
+    {
+      $pull: { items: mongoose.Types.ObjectId(req.params.id) },
+    }
+  );
+  return res.json({
+    Data: "items",
+    message: "Deleted Successfully.....!",
   });
 };

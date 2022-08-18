@@ -1,4 +1,5 @@
 const Supermarket = require("../models/SupermarketModel");
+const Items = require("../models/ItemsModel");
 const AppError = require("./AppError");
 const catchAsync = require("./CatchAsync");
 
@@ -10,16 +11,24 @@ exports.addSupermarket = catchAsync(async (req, res, next) => {
   if (findCat.length !== 0) {
     return next(new AppError("SupermarketAlready Exist...!", 400));
   }
+
+  const items = await Items.find();
+  let ids = [];
+  if (items.length) {
+    items.forEach((e) => {
+      ids.push(e._id);
+    });
+  }
   const supermarketData = await Supermarket.create({
     name: req.body.name,
-    items: [],
+    items: ids.length ? ids : [],
     active: req.body.active,
   });
   res.json({ data: supermarketData, message: "created" });
 });
 
 exports.getAllSupermarket = async (req, res, next) => {
-  const SupermarketData = await Supermarket.find();
+  const SupermarketData = await Supermarket.find().populate("items");
   res.json({
     Data: SupermarketData,
     message: "All SupermarketList...!",
