@@ -13,15 +13,15 @@ exports.addSupermarket = catchAsync(async (req, res, next) => {
   }
 
   const items = await Items.find();
-  let ids = [];
+  let itemList = [];
   if (items.length) {
     items.forEach((e) => {
-      ids.push(e._id);
+      itemList.push(e);
     });
   }
   const supermarketData = await Supermarket.create({
     name: req.body.name,
-    items: ids.length ? ids : [],
+    items: itemList.length ? itemList : [],
     active: req.body.active,
   });
   res.json({ data: supermarketData, message: "created" });

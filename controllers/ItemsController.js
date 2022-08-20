@@ -24,7 +24,7 @@ exports.CreateItems = async (req, res, next) => {
       _id: { $in: ids },
     },
     {
-      $push: { items: item._id },
+      $push: { items: item },
     },
     { multi: true }
   );
@@ -60,7 +60,6 @@ exports.deleteItems = async (req, res, next) => {
 
   allmarket.forEach((x) => {
     let id = x.items.findIndex((e) => e === req.params.id);
-    console.log(id);
     if (id === -1) {
       ids.push(x._id);
     }
@@ -71,7 +70,7 @@ exports.deleteItems = async (req, res, next) => {
       _id: { $in: ids },
     },
     {
-      $pull: { items: mongoose.Types.ObjectId(req.params.id) },
+      $pull: { items: { "_id": mongoose.Types.ObjectId(req.params.id) } },
     }
   );
   return res.json({

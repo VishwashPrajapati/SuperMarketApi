@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
+const ItemsModel = require("./ItemsModel");
 
 const supermarketSchema = mongoose.Schema({
   name: { type: String, require: true },
   items: [
     {
-      type: mongoose.Schema.ObjectId,
-      ref: "Items",
-    },
+      name: String,
+      price: Number,
+      active: Boolean
+    }
   ],
   active: { type: Boolean },
 });
