@@ -78,3 +78,22 @@ exports.deleteItems = async (req, res, next) => {
     message: "Deleted Successfully.....!",
   });
 };
+
+exports.updateItem = async (req, res, next) => {
+  const result = await Supermarket.findOneAndUpdate(
+    {
+      "items._id": req.params.id,
+      _id: req.body.s_id
+    },
+    {
+      $set: {
+        'items.$.price': req.body.price
+      }
+    }, { new: true }
+  );
+
+  return res.json({
+    data: result,
+    message: "updated Successfully.....!",
+  });
+};
