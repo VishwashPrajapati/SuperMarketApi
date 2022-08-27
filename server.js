@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 var express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 //var io = require('socket.io')(3000);
 var app = express();
 
