@@ -7,7 +7,7 @@ const supermarketSchema = mongoose.Schema({
     {
       name: String,
       price: Number,
-      category: string,
+      category: String,
       active: Boolean,
     },
   ],
