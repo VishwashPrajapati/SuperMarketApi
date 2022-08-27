@@ -28,7 +28,14 @@ exports.addSupermarket = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllSupermarket = async (req, res, next) => {
-  const SupermarketData = await Supermarket.find().populate("items");
+  const SupermarketData = await Supermarket.find().populate({
+    path: "items",
+    populate: {
+      path: "category",
+      model: "Category",
+      select: { name: 1 },
+    },
+  });
   res.json({
     Data: SupermarketData,
     message: "All SupermarketList...!",

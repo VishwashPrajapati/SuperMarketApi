@@ -70,7 +70,7 @@ exports.deleteItems = async (req, res, next) => {
       _id: { $in: ids },
     },
     {
-      $pull: { items: { "_id": mongoose.Types.ObjectId(req.params.id) } },
+      $pull: { items: { _id: mongoose.Types.ObjectId(req.params.id) } },
     }
   );
   return res.json({
@@ -83,13 +83,14 @@ exports.updateItem = async (req, res, next) => {
   const result = await Supermarket.findOneAndUpdate(
     {
       "items._id": req.params.id,
-      _id: req.body.s_id
+      _id: req.body.s_id,
     },
     {
       $set: {
-        'items.$.price': req.body.price
-      }
-    }, { new: true }
+        "items.$.price": req.body.price,
+      },
+    },
+    { new: true }
   );
 
   return res.json({

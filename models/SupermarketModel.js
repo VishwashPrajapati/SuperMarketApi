@@ -7,7 +7,11 @@ const supermarketSchema = mongoose.Schema({
     {
       name: String,
       price: Number,
-      category: String,
+      category: {
+        type: mongoose.Schema.ObjectId,
+        require: true,
+        ref: "Category",
+      },
       active: Boolean,
     },
   ],
