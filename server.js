@@ -24,7 +24,7 @@ process.on("uncaughtException", (err) => {
 dotenv.config({ path: "./config.env" });
 
 app = require("./app");
-// app.use(cors());
+app.use(cors({ origin: "*" }));
 
 const DB = process.env.DATABASE;
 
