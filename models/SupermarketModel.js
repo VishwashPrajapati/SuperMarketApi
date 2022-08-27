@@ -7,8 +7,9 @@ const supermarketSchema = mongoose.Schema({
     {
       name: String,
       price: Number,
-      active: Boolean
-    }
+      category: string,
+      active: Boolean,
+    },
   ],
   active: { type: Boolean },
 });
