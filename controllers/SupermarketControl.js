@@ -43,7 +43,14 @@ exports.getAllSupermarket = async (req, res, next) => {
 };
 
 exports.getSupermarket = async (req, res, next) => {
-  const SupermarketData = await Supermarket.findById(req.params.id);
+  const SupermarketData = await Supermarket.findById(req.params.id).populate({
+    path: "items",
+    populate: {
+      path: "category",
+      model: "Category",
+      select: { name: 1 },
+    },
+  });
   res.json({
     Data: SupermarketData,
     message: "Successfull..!",
