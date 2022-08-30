@@ -98,3 +98,26 @@ exports.updateItem = async (req, res, next) => {
     message: "updated Successfully.....!",
   });
 };
+
+exports.updateItemData = async (req, res, next) => {
+  await Items.findOneAndUpdate(
+    {
+      _id: req.params.id,
+    },
+    req.body
+  );
+
+  await Supermarket.updateMany(
+    { "items._id": req.params.id },
+    {
+      $set: {
+        "items.$.name": req.body.name,
+      },
+    },
+    { multi: true }
+  );
+
+  return res.json({
+    message: "updated Successfully.....!",
+  });
+};
