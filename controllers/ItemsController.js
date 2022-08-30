@@ -112,6 +112,8 @@ exports.updateItemData = async (req, res, next) => {
     {
       $set: {
         "items.$.name": req.body.name,
+        "items.$.category": req.body.category,
+        "items.$.active": req.body.active,
       },
     },
     { multi: true }
